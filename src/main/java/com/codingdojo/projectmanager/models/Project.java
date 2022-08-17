@@ -16,6 +16,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -35,11 +36,9 @@ public class Project {
 	@Size(min = 2, max = 20, message = "Description must be between 2 and 20 characters")
 	private String description;
 
-	@NotEmpty(message = "Must enter a team_lead")
-	@Size(min = 2, max = 20, message = "Team lead must be between 2 and 20 characters")
-	private String team_lead;
+	private Long team_lead;
 
-	@NotEmpty(message = "Must enter a project due date")
+	@NotNull(message = "Must enter a project due date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date project_date;
 
@@ -52,7 +51,7 @@ public class Project {
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_projects", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-	private List<User> users;
+	private List<User> project_users;
 
 	public Project() {
 	}
@@ -81,11 +80,11 @@ public class Project {
 		this.description = description;
 	}
 
-	public String getTeam_lead() {
+	public Long getTeam_lead() {
 		return team_lead;
 	}
 
-	public void setTeam_lead(String team_lead) {
+	public void setTeam_lead(Long team_lead) {
 		this.team_lead = team_lead;
 	}
 
@@ -113,12 +112,14 @@ public class Project {
 		this.updated_at = updated_at;
 	}
 
-	public List<User> getUsers() {
-		return users;
+
+
+	public List<User> getProject_users() {
+		return project_users;
 	}
 
-	public void setUsers(List<User> users) {
-		this.users = users;
+	public void setProject_users(List<User> project_users) {
+		this.project_users = project_users;
 	}
 
 	@PrePersist

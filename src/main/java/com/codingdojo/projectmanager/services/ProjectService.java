@@ -1,6 +1,5 @@
 package com.codingdojo.projectmanager.services;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,12 +35,8 @@ public class ProjectService {
 		proRepo.deleteById(id);
 	}
 
-	public Project updateProject(Long id, String title, String description, Date project_date) {
-		Project updatedProject = findProject(id);
-		updatedProject.setTitle(title);
-		updatedProject.setDescription(description);
-		updatedProject.setProject_date(project_date);
-		return proRepo.save(updatedProject);
+	public Project updateProject(Project p) {
+		return proRepo.save(p);
 	}
 
 }

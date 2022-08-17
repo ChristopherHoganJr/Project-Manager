@@ -31,8 +31,14 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col">
+			<div class="col d-flex align-items-center justify-content-between">
 				<h3>All Projects</h3>
+				<a href="/projects/new" class="btn btn-success btn-sm">+ new
+					project</a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
 				<table class="table">
 					<thead>
 						<tr>
@@ -44,12 +50,15 @@
 					</thead>
 					<tbody>
 						<c:forEach var="project" items="${allProjects}">
-							<tr>
-								<td><c:out value="${project.title}" /></td>
+							<c:if test="${!project.project_users.contains(currentUser)}">
+								<tr>
+								<td><a href="/projects/${project.id}"><c:out
+											value="${project.title}" /></a></td>
 								<td><c:out value="${project.team_lead}" /></td>
 								<td><c:out value="${project.project_date}" /></td>
-								<td>Join team</td>
+								<td>Leave team</td>
 							</tr>
+							</c:if>
 						</c:forEach>
 					</tbody>
 				</table>
@@ -68,12 +77,20 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="project" items="${allProjects}">
+						<c:forEach var="project" items="${currentUser.projects}">
 							<tr>
-								<td><c:out value="${project.title}" /></td>
+								<td><a href="/projects/${project.id}"><c:out
+											value="${project.title}" /></a></td>
 								<td><c:out value="${project.team_lead}" /></td>
 								<td><c:out value="${project.project_date}" /></td>
-								<td>Leave team</td>
+								<td>
+									<c:if test="${currentUser.id eq project.team_lead}">
+										<a href="projects/edit/${project.id}">Edit</a>
+									</c:if>
+									<c:if test="${!currentUser.id eq project.team_lead}">
+										<a href="projects/edit/${project.id}">Leave Team</a>
+									</c:if>
+								</td>
 							</tr>
 						</c:forEach>
 					</tbody>
