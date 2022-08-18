@@ -12,7 +12,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Create a Task</title>
+<title>Edit My Task</title>
 <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="/css/main.css">
 <!-- change to match your file/naming structure -->
@@ -52,6 +52,7 @@
 				</form:form>
 			</div>
 		</div>
+		<div class="row"><div class="col"><a href="/projects/delete/${project.id}">Delete</a></div></div>
 	</div>
 </body>
 </html>

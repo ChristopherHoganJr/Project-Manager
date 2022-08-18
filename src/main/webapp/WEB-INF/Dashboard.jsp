@@ -54,9 +54,11 @@
 								<tr>
 								<td><a href="/projects/${project.id}"><c:out
 											value="${project.title}" /></a></td>
-								<td><c:out value="${project.team_lead}" /></td>
+								<td><c:out value="${project.project_lead.first_name}" /></td>
 								<td><c:out value="${project.project_date}" /></td>
-								<td>Leave team</td>
+								<td>
+									<a href="/projects/join/${project.id}">Join Team</a>
+								</td>
 							</tr>
 							</c:if>
 						</c:forEach>
@@ -81,14 +83,14 @@
 							<tr>
 								<td><a href="/projects/${project.id}"><c:out
 											value="${project.title}" /></a></td>
-								<td><c:out value="${project.team_lead}" /></td>
+								<td><c:out value="${project.project_lead.id}" /></td>
 								<td><c:out value="${project.project_date}" /></td>
 								<td>
-									<c:if test="${currentUser.id eq project.team_lead}">
-										<a href="projects/edit/${project.id}">Edit</a>
+									<c:if test="${currentUser.id eq project.project_lead.id}">
+										<a href="/projects/edit/${project.id}">Edit</a>
 									</c:if>
-									<c:if test="${!currentUser.id eq project.team_lead}">
-										<a href="projects/edit/${project.id}">Leave Team</a>
+									<c:if test="${!(currentUser.id eq project.project_lead.id)}">
+										<a href="/projects/leave/${project.id}">Leave Team</a>
 									</c:if>
 								</td>
 							</tr>

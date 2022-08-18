@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -36,8 +37,6 @@ public class Project {
 	@Size(min = 2, max = 20, message = "Description must be between 2 and 20 characters")
 	private String description;
 
-	private Long team_lead;
-
 	@NotNull(message = "Must enter a project due date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date project_date;
@@ -48,6 +47,10 @@ public class Project {
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date updated_at;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="project_lead")
+	private User project_lead;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_projects", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
@@ -78,14 +81,6 @@ public class Project {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public Long getTeam_lead() {
-		return team_lead;
-	}
-
-	public void setTeam_lead(Long team_lead) {
-		this.team_lead = team_lead;
 	}
 
 	public Date getProject_date() {
@@ -130,5 +125,13 @@ public class Project {
 	@PreUpdate
 	protected void onUpdate() {
 		this.updated_at = new Date();
+	}
+
+	public User getProject_lead() {
+		return project_lead;
+	}
+
+	public void setProject_lead(User project_lead) {
+		this.project_lead = project_lead;
 	}
 }

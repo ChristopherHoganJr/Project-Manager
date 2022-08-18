@@ -44,7 +44,7 @@ public class ProjectController {
 	}
 
 	@GetMapping("/projects/new")
-	public String addProject(HttpSession session) {
+	public String addProject(HttpSession session, @ModelAttribute("project") Project project) {
 		Long user_id = (Long) session.getAttribute("user_id");
 		if (user_id == null) {
 			return "redirect:/";
@@ -62,12 +62,10 @@ public class ProjectController {
 			if(result.hasErrors()) {
 				return "CreateProject.jsp";
 			} else {
-				project.setTeam_lead(user_id);
-				Project newPro = proServ.createProject(project);
-		
-				System.out.println(newPro.getId());
-				System.out.println(newPro.getProject_users());
 				User u = userServ.findOneUser(user_id);
+				project.setProject_lead(u);
+				Project newPro = proServ.createProject(project);
+				
 				u.getProjects().add(newPro);
 
 				userServ.updateUser(u);
@@ -92,7 +90,9 @@ public class ProjectController {
 	@PostMapping("/projects/edit/{id}/submit")
 	public String submitEditProject(@PathVariable Long id, @ModelAttribute("project") Project project) {
 		Project p = proServ.findProject(id);
-		p = project;
+		p.setTitle(project.getTitle());
+		p.setDescription(project.getDescription());
+		p.setProject_date(project.getProject_date());
 		proServ.updateProject(p);
 		return "redirect:/dashboard";
 	}
@@ -103,4 +103,33 @@ public class ProjectController {
 		model.addAttribute("project", p);
 		return "ShowProject.jsp";
 	}
+	
+	@GetMapping("/projects/join/{id}")
+	public String joinProject(@PathVariable Long id, HttpSession session) {
+		Long user_id = (Long) session.getAttribute("user_id");
+		Project p = proServ.findProject(id);
+		User u = userServ.findOneUser(user_id);
+		u.getProjects().add(p);
+		userServ.updateUser(u);
+		
+		return "redirect:/dashboard";
+	}
+	
+	@GetMapping("/projects/leave/{id}")
+	public String leaveProject(@PathVariable Long id, HttpSession session) {
+		Long user_id = (Long) session.getAttribute("user_id");
+		Project p = proServ.findProject(id);
+		User u = userServ.findOneUser(user_id);
+		u.getProjects().remove(p);
+		userServ.updateUser(u);
+		
+		return "redirect:/dashboard";
+	}
+	
+	@GetMapping("/projects/delete/{id}")
+	public String deleteProject(@PathVariable Long id, HttpSession session) {
+		proServ.deleteProject(id);
+		return "redirect:/dashboard";
+	}
+	
 }

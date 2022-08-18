@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -57,6 +58,9 @@ public class User {
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date updated_at;
+	
+	@OneToMany(mappedBy = "project_lead", fetch = FetchType.LAZY)
+	private List<Project> lead_project;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_projects", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "project_id"))
@@ -145,5 +149,13 @@ public class User {
 	@PreUpdate
 	protected void onUpdate() {
 		this.updated_at = new Date();
+	}
+
+	public List<Project> getLead_project() {
+		return lead_project;
+	}
+
+	public void setLead_project(List<Project> lead_project) {
+		this.lead_project = lead_project;
 	}
 }

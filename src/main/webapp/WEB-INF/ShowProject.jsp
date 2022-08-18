@@ -13,7 +13,7 @@
 <head>
     
 <meta charset="UTF-8">
-<title>Tacos</title>
+<title>Project Details</title>
 <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
     
 <link rel="stylesheet" href="/css/main.css">
